@@ -1,7 +1,8 @@
 #include "LetterRotateGame.h"
 
-LetRotGame::LetRotGame(char word_1[5], char word_2[5], char win_word_1[5], 
-	char win_word_2[5], unsigned execute_command_max) 
+LetRotGame::LetRotGame(char word_1[WORD_LENGTH + 1], char word_2[WORD_LENGTH + 1], 
+	char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1],
+	unsigned execute_command_max) 
 	: m_word_1(word_1), m_word_2(word_2),
 	m_win_word_1(win_word_1), m_win_word_2(win_word_2),
 	m_execute_command_max(execute_command_max),
@@ -45,7 +46,25 @@ void LetRotGame::execute_command(int id)
 
 int LetRotGame::get_win_k() const
 {
+	int res = 0;
+	for (int i = 0; i < WORD_LENGTH; ++i)
+	{
+		if (m_word_1[i] == m_win_word_1[i])
+			++res;
+		if (m_word_2[i] == m_win_word_2[i])
+			++res;
+	}
+	return res;
+}
+
+int LetRotGame::get_min_win_k() const
+{
 	return 0;
+}
+
+int LetRotGame::get_max_win_k() const
+{
+	return WORD_LENGTH * 2;
 }
 
 bool LetRotGame::is_win() const

@@ -7,16 +7,22 @@
 class LetRotGame : public slv::ITask
 {
 public:
+	static const int WORD_LENGTH = 4;
+
 	// constructor
-	LetRotGame(char word_1[5], char word_2[5],
-		char win_word_1[5], char win_word_2[5],
+	LetRotGame(char word_1[WORD_LENGTH+1], char word_2[WORD_LENGTH+1],
+		char win_word_1[WORD_LENGTH+1], char win_word_2[WORD_LENGTH+1],
 		unsigned execute_command_max);
 
 	// implementation ITask
-	int get_win_k() const override;
+	void print_state(std::ostream& stream) const override;
+
 	bool is_win() const override;
 	bool is_loose() const override;
-	void print_state(std::ostream& stream) const override;
+
+	int get_win_k() const override;
+	int get_min_win_k() const override;
+	int get_max_win_k() const override;
 
 	int get_command_count() const override;
 	std::string get_command_name(int id) const override;
