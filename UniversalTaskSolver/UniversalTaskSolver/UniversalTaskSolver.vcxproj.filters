@@ -11,12 +11,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UniversalTaskSolver.h">
+    <ClInclude Include="src\UniversalTaskSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UniversalTaskSolver.cpp">
+    <ClCompile Include="src\UniversalTaskSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

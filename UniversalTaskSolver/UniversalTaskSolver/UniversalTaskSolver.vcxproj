@@ -139,10 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="UniversalTaskSolver.h" />
+    <ClInclude Include="src\UniversalTaskSolver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UniversalTaskSolver.cpp" />
+    <ClCompile Include="src\UniversalTaskSolver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
