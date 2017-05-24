@@ -7,11 +7,13 @@
 class LetRotGame : public slv::ITask
 {
 public:
+	typedef std::shared_ptr<LetRotGame> Ptr;
+public:
 	static const int WORD_LENGTH = 4;
 
 	// constructor
-	LetRotGame(char word_1[WORD_LENGTH+1], char word_2[WORD_LENGTH+1],
-		char win_word_1[WORD_LENGTH+1], char win_word_2[WORD_LENGTH+1],
+	LetRotGame(char word_1[WORD_LENGTH + 1], char word_2[WORD_LENGTH + 1],
+		char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1],
 		unsigned execute_command_max);
 
 	// implementation ITask

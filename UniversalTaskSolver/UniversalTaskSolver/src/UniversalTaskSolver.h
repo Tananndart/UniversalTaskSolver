@@ -7,6 +7,7 @@
 #endif
 
 #include <string>
+#include <memory>
 
 namespace slv
 {
@@ -30,6 +31,8 @@ namespace slv
 	class TASKSOLVER_API Solver
 	{
 	public:
-		void execute(std::ostream& stream, ITask* game);
+		typedef std::shared_ptr<Solver> Ptr;
+	public:
+		void execute(std::ostream& stream, std::shared_ptr<ITask> game);
 	};
 }
