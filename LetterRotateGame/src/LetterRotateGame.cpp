@@ -1,5 +1,7 @@
 #include "LetterRotateGame.h"
 
+using namespace std;
+
 LetRotGame::LetRotGame(char word_1[WORD_LENGTH + 1], char word_2[WORD_LENGTH + 1], 
 	char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1],
 	unsigned execute_command_max) 
@@ -9,12 +11,57 @@ LetRotGame::LetRotGame(char word_1[WORD_LENGTH + 1], char word_2[WORD_LENGTH + 1
 	m_execute_command_cnt(0)
 {
 	// init commands
-	m_commands[0] = Command("rotate_left_clockwise", &LetRotGame::rotate_left_clockwise);
-	m_commands[1] = Command("rotate_left_counter_clockwise", &LetRotGame::rotate_left_counter_clockwise);
-	m_commands[2] = Command("rotate_center_clockwise", &LetRotGame::rotate_center_clockwise);
-	m_commands[3] = Command("rotate_center_counter_clockwise", &LetRotGame::rotate_center_counter_clockwise);
-	m_commands[4] = Command("rotate_right_clockwise", &LetRotGame::rotate_right_clockwise);
-	m_commands[5] = Command("rotate_right_counter_clockwise", &LetRotGame::rotate_right_counter_clockwise);
+	m_commands[0] = Command("+L", "rotate_left_clockwise", &LetRotGame::rotate_left_clockwise);
+	m_commands[1] = Command("-L", "rotate_left_counter_clockwise", &LetRotGame::rotate_left_counter_clockwise);
+	m_commands[2] = Command("+C", "rotate_center_clockwise", &LetRotGame::rotate_center_clockwise);
+	m_commands[3] = Command("-C", "rotate_center_counter_clockwise", &LetRotGame::rotate_center_counter_clockwise);
+	m_commands[4] = Command("+R", "rotate_right_clockwise", &LetRotGame::rotate_right_clockwise);
+	m_commands[5] = Command("-R", "rotate_right_counter_clockwise", &LetRotGame::rotate_right_counter_clockwise);
+}
+
+void LetRotGame::play(istream& in_stream, ostream& out_stream)
+{
+	out_stream << "Let's go!" << endl;
+	out_stream << "This words:" << endl;
+	out_stream << m_word_1 << endl << m_word_2 << endl;
+	out_stream << "... must be:" << endl;
+	out_stream << m_win_word_1 << endl << m_win_word_2 << endl;
+	out_stream << endl;
+
+	out_stream << "Your commands:" << endl;
+	for (auto it = m_commands.begin(); it != m_commands.end(); ++it)
+	{
+		const Command& comm = it->second;
+		out_stream << comm.name << " - " << comm.desc << endl;
+	}
+	out_stream << endl;
+
+	out_stream << "Are you ready? Go!" << endl;
+	string str;
+	while (!is_win() || is_loose())
+	{
+		// TODO: add user input validation
+		in_stream >> str;
+
+		// OPT: bad map use =(
+		for (auto it = m_commands.begin(); it != m_commands.end(); ++it)
+		{
+			const Command& comm = it->second;
+			if (comm.name.compare(str) == 0)
+			{
+				execute_command(it->first);
+				out_stream << endl;
+				print_state(out_stream);
+				break;
+			}
+		}
+	}
+
+	if (is_win())
+		out_stream << "WIN!!!" << endl;
+	else
+		out_stream << "LOOSE!" << endl;
+
 }
 
 void LetRotGame::print_state(std::ostream & stream) const

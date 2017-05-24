@@ -16,6 +16,9 @@ public:
 		char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1],
 		unsigned execute_command_max);
 
+	// play game with user
+	void play(std::istream& in_stream, std::ostream& out_stream);
+
 	// implementation ITask
 	void print_state(std::ostream& stream) const override;
 
@@ -42,10 +45,10 @@ private:
 	typedef void(LetRotGame::*ptr_command)();
 	struct Command
 	{
-		Command() : name(""), body(nullptr) {}
-		Command(const std::string& name, ptr_command comm)
-			: name(name), body(comm) {}
-		std::string name;
+		Command() : name(""), desc(""), body(nullptr) {}
+		Command(const std::string& name, const std::string& desc, ptr_command comm)
+			: name(name), desc(desc), body(comm) {}
+		std::string name, desc;
 		ptr_command body;
 	};
 private:
