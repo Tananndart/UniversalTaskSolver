@@ -4,7 +4,7 @@
 
 #include "UniversalTaskSolver.h"
 
-class LetRotGame : public slv::ITask
+class LetRotGame : public slv::IGreedyAlg
 {
 public:
 	typedef std::shared_ptr<LetRotGame> Ptr;

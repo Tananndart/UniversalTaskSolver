@@ -11,7 +11,10 @@
 
 namespace slv
 {
-	class TASKSOLVER_API ITask
+
+	class IBase {};
+
+	class TASKSOLVER_API IGreedyAlg : public IBase
 	{
 	public:
 		virtual void print_state(std::ostream& stream) const = 0;
@@ -33,6 +36,6 @@ namespace slv
 	public:
 		typedef std::shared_ptr<Solver> Ptr;
 	public:
-		void execute(std::ostream& stream, std::shared_ptr<ITask> game);
+		void execute(std::ostream& stream, std::shared_ptr<IBase> game_interface);
 	};
 }

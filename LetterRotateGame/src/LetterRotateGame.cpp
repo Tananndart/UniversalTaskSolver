@@ -50,6 +50,7 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 			if (comm.name.compare(str) == 0)
 			{
 				execute_command(it->first);
+				out_stream << "Win_K = " << get_win_k() << endl;
 				out_stream << endl;
 				print_state(out_stream);
 				break;

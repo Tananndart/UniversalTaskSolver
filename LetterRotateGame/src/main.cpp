@@ -12,9 +12,11 @@ char win_word_2[5] = "3L3D";
 
 void main()
 {
+	LetRotGame::Ptr game = make_shared<LetRotGame>(word_1, word_2, win_word_1, win_word_2, 100);	
+
+	//game->play(cin, cout);
+
 	slv::Solver::Ptr solver = make_shared<slv::Solver>();
-	LetRotGame::Ptr game = make_shared<LetRotGame>(word_1, word_2, win_word_1, win_word_2, 100);
-	
 	solver->execute(cout, game);
 
 	char ch_stop;
