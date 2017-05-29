@@ -19,7 +19,7 @@ public:
 	// play game with user
 	void play(std::istream& in_stream, std::ostream& out_stream);
 
-	// implementation ITask
+	// implementation IBaseAlg
 	void print_state(std::ostream& stream) const override;
 
 	bool is_win() const override;
@@ -32,6 +32,9 @@ public:
 	int get_command_count() const override;
 	std::string get_command_name(int id) const override;
 	void execute_command(int id) override;
+
+	// Implentation IGreedyAlg
+	void undo_last_command() override {}
 
 	// commands
 	void rotate_left_clockwise();

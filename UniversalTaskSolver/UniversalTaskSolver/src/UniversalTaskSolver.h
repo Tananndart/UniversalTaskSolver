@@ -11,10 +11,7 @@
 
 namespace slv
 {
-
-	class IBase {};
-
-	class TASKSOLVER_API IGreedyAlg : public IBase
+	class IBaseAlg 
 	{
 	public:
 		virtual void print_state(std::ostream& stream) const = 0;
@@ -31,11 +28,17 @@ namespace slv
 		virtual std::string get_command_name(int id) const = 0;
 	};
 
+	class TASKSOLVER_API IGreedyAlg : public IBaseAlg
+	{
+	public:
+		virtual void undo_last_command() = 0;
+	};
+
 	class TASKSOLVER_API Solver
 	{
 	public:
 		typedef std::shared_ptr<Solver> Ptr;
 	public:
-		void execute(std::ostream& stream, std::shared_ptr<IBase> game_interface);
+		void execute(std::ostream& stream, std::shared_ptr<IBaseAlg> game_interface);
 	};
 }

@@ -4,11 +4,16 @@ namespace slv
 {
 	using namespace std;
 
-	void Solver::execute(std::ostream& stream, shared_ptr<IBase> game_base)
+	void Solver::execute(std::ostream& stream, shared_ptr<IBaseAlg> game_base)
 	{
-		auto game = static_pointer_cast<IGreedyAlg>(game_base);
+		auto game = dynamic_pointer_cast<IGreedyAlg>(game_base);
 		if (game)
 		{
+
+
+
+			/*
+			// solve game for test
 			game->print_state(stream);
 			stream << game->is_win() << endl;
 
@@ -28,6 +33,7 @@ namespace slv
 
 			stream << game->is_win();
 			stream << game->get_win_k() << endl;
+			*/
 		}
 	}
 
