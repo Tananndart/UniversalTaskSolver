@@ -11,21 +11,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\UniversalTaskSolver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Defines.h">
+    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\UniversalTaskSolver.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graph.cpp">
+    <ClCompile Include="unittest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

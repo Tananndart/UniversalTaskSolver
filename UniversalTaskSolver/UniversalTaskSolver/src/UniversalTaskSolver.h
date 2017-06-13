@@ -1,10 +1,6 @@
 #pragma once
 
-#ifdef UNIVERSALTASKSOLVER_EXPORTS
-#define TASKSOLVER_API __declspec(dllexport) 
-#else
-#define TASKSOLVER_API __declspec(dllimport) 
-#endif
+#include "Defines.h"
 
 #include <string>
 #include <memory>
