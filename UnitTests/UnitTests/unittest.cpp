@@ -19,12 +19,12 @@ namespace UnitTests
 		TEST_METHOD(f_create_node)
 		{	
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
 			// execute
-			NodePtr node_1 = g->create_node(10);
-			NodePtr node_2 = g->create_node(20);
-			NodePtr node_3 = g->create_node(30);
+			NodePtr<int> node_1 = g->create_node(10);
+			NodePtr<int> node_2 = g->create_node(20);
+			NodePtr<int> node_3 = g->create_node(30);
 
 			// check
 			Assert::AreEqual(3, (int)g->get_node_count());
@@ -36,20 +36,20 @@ namespace UnitTests
 		TEST_METHOD(f_create_link)
 		{
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
-			NodePtr node_1 = g->create_node(10);
-			NodePtr node_2 = g->create_node(20);
-			NodePtr node_3 = g->create_node(30);
+			NodePtr<int> node_1 = g->create_node(10);
+			NodePtr<int> node_2 = g->create_node(20);
+			NodePtr<int> node_3 = g->create_node(30);
 
 			// execute
-			LinkPtr link_n1_n2 = g->create_link();
+			LinkPtr<int> link_n1_n2 = g->create_link();
 			link_n1_n2->set_nodes(std::make_pair(node_1, node_2));
 			link_n1_n2->set_weight(1);
 
-			LinkPtr link_n2_n3 = g->create_link(node_2->id(), node_3->id(), 2);
+			LinkPtr<int> link_n2_n3 = g->create_link(node_2->id(), node_3->id(), 2);
 
-			LinkPtr link_n1_n3 = g->create_link(node_1, node_3, 3);
+			LinkPtr<int> link_n1_n3 = g->create_link(node_1, node_3, 3);
 
 			// check
 			Assert::AreEqual(3, (int)g->get_link_count());
@@ -73,9 +73,9 @@ namespace UnitTests
 			const int NODE_CNT = 20; // warning: > 10
 
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
-			std::vector<NodePtr> local_nodes(NODE_CNT, nullptr);
+			std::vector<NodePtr<int>> local_nodes(NODE_CNT, nullptr);
 			for (int i = 0; i < NODE_CNT; ++i)
 				local_nodes[i] = g->create_node(i);
 			
@@ -96,16 +96,16 @@ namespace UnitTests
 			const int LINK_CNT = 20; // warning: > 10
 
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
-			NodePtr node_1 = g->create_node(10);
-			NodePtr node_2 = g->create_node(20);
-			NodePtr node_3 = g->create_node(30);
+			NodePtr<int> node_1 = g->create_node(10);
+			NodePtr<int> node_2 = g->create_node(20);
+			NodePtr<int> node_3 = g->create_node(30);
 			
-			LinkPtr lnk_12 = g->create_link(node_1, node_2, 1);
-			LinkPtr lnk_23 = g->create_link(node_2, node_3, 2);
+			LinkPtr<int> lnk_12 = g->create_link(node_1, node_2, 1);
+			LinkPtr<int> lnk_23 = g->create_link(node_2, node_3, 2);
 
-			std::vector<LinkPtr> local_links(LINK_CNT, nullptr);
+			std::vector<LinkPtr<int>> local_links(LINK_CNT, nullptr);
 			for (int i = 0; i < LINK_CNT; ++i)
 				local_links[i] = g->create_link();
 
@@ -125,18 +125,18 @@ namespace UnitTests
 		TEST_METHOD(f_get_nodes)
 		{
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
-			NodePtr node_1 = g->create_node(10);
-			NodePtr node_2 = g->create_node(20);
-			NodePtr node_3 = g->create_node(30);
+			NodePtr<int> node_1 = g->create_node(10);
+			NodePtr<int> node_2 = g->create_node(20);
+			NodePtr<int> node_3 = g->create_node(30);
 
 			// check std gets
 			Assert::AreEqual(true, g->get_node(100500) == nullptr);
 			Assert::AreEqual(true, g->get_node(node_1->id()) != nullptr);
 
 			// check template getters
-			std::vector<NodePtr> nodes;
+			std::vector<NodePtr<int>> nodes;
 			nodes.resize(g->get_node_count());
 			g->get_all_nodes_ptr(nodes.begin());
 
@@ -155,22 +155,22 @@ namespace UnitTests
 		TEST_METHOD(f_get_links)
 		{
 			// init
-			GraphPtr g = std::make_shared<Graph>();
+			GraphPtr<int> g = std::make_shared<Graph<int>>();
 
-			NodePtr node_1 = g->create_node(10);
-			NodePtr node_2 = g->create_node(20);
-			NodePtr node_3 = g->create_node(30);
+			NodePtr<int> node_1 = g->create_node(10);
+			NodePtr<int> node_2 = g->create_node(20);
+			NodePtr<int> node_3 = g->create_node(30);
 
-			LinkPtr link_1 = g->create_link(node_1, node_2, 1);
-			LinkPtr link_2 = g->create_link(node_2, node_3, 2);
-			LinkPtr link_3 = g->create_link();
+			LinkPtr<int> link_1 = g->create_link(node_1, node_2, 1);
+			LinkPtr<int> link_2 = g->create_link(node_2, node_3, 2);
+			LinkPtr<int> link_3 = g->create_link();
 
 			// check std gets
 			Assert::AreEqual(true, g->get_link(100500) == nullptr);
 			Assert::AreEqual(true, g->get_link(link_1->id()) != nullptr);
 
 			// check template getters
-			std::vector<LinkPtr> links;
+			std::vector<LinkPtr<int>> links;
 			links.resize(g->get_link_count());
 			g->get_all_link_ptr(links.begin());
 
@@ -185,6 +185,5 @@ namespace UnitTests
 			Assert::AreEqual(g->get_link_count(), link_ids.size());
 			Assert::AreEqual(true, link_ids.find(link_2->id()) != link_ids.end());
 		}
-
 	};
 }
