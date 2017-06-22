@@ -143,13 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="DynamicGraph.h" />
     <ClInclude Include="src\Defines.h" />
+    <ClInclude Include="src\TaskGraph.h" />
     <ClInclude Include="src\Graph.h" />
+    <ClInclude Include="src\GreedyAlg.h" />
     <ClInclude Include="src\UniversalTaskSolver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DynamicGraph.cpp" />
+    <ClCompile Include="src\TaskGraph.cpp" />
+    <ClCompile Include="src\GreedyAlg.cpp" />
     <ClCompile Include="src\UniversalTaskSolver.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

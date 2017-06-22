@@ -4,10 +4,9 @@ namespace slv
 {
 	using namespace std;
 
-	void Solver::execute(std::ostream& stream, shared_ptr<IBaseAlg> game_base)
+	void Solver::execute(std::ostream& stream, ITaskPtr task)
 	{
-		auto game = dynamic_pointer_cast<IGreedyAlg>(game_base);
-		if (game)
+		if (task)
 		{
 
 

@@ -20,7 +20,10 @@
     <ClInclude Include="src\Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicGraph.h">
+    <ClInclude Include="src\GreedyAlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TaskGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -28,7 +31,10 @@
     <ClCompile Include="src\UniversalTaskSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicGraph.cpp">
+    <ClCompile Include="src\GreedyAlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TaskGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
