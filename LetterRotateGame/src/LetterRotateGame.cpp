@@ -3,12 +3,13 @@
 using namespace std;
 
 LetRotGame::LetRotGame(char word_1[WORD_LENGTH + 1], char word_2[WORD_LENGTH + 1], 
-	char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1],
-	unsigned execute_command_max) 
+	char win_word_1[WORD_LENGTH + 1], char win_word_2[WORD_LENGTH + 1], unsigned execute_command_max) 
 	: m_word_1(word_1), m_word_2(word_2),
+	m_orig_word_1(word_1), m_orig_word_2(word_2),
 	m_win_word_1(win_word_1), m_win_word_2(win_word_2),
 	m_execute_command_max(execute_command_max),
-	m_execute_command_cnt(0)
+	m_execute_command_cnt(0),
+	m_cast_id_counter(0)
 {
 	// init commands
 	m_commands[0] = Command("+L", "rotate_left_clockwise", &LetRotGame::rotate_left_clockwise);
@@ -38,7 +39,7 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 
 	out_stream << "Are you ready? Go!" << endl;
 	string str;
-	while (!is_win() || is_loose())
+	while (!is_solve() || is_loose())
 	{
 		// TODO: add user input validation
 		in_stream >> str;
@@ -50,7 +51,7 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 			if (comm.name.compare(str) == 0)
 			{
 				execute_command(it->first);
-				out_stream << "Win_K = " << get_win_k() << endl;
+				out_stream << "Win_K = " << get_solve_k() << endl;
 				out_stream << endl;
 				print_state(out_stream);
 				break;
@@ -58,7 +59,7 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 		}
 	}
 
-	if (is_win())
+	if (is_solve())
 		out_stream << "WIN!!!" << endl;
 	else
 		out_stream << "LOOSE!" << endl;
@@ -85,6 +86,36 @@ std::string LetRotGame::get_command_name(int id) const
 	return std::string();
 }
 
+int LetRotGame::create_cast() const
+{
+	int new_id = m_cast_id_counter++;
+
+	Cast new_cast;
+	new_cast.word_1 = m_word_1;
+	new_cast.word_2 = m_word_2;
+	new_cast.execute_comm_cnt = m_execute_command_cnt;
+
+	m_casts[new_id] = new_cast;
+	return new_id;
+}
+
+void LetRotGame::delete_cast(int cast_id) const
+{
+	m_casts.erase(cast_id);
+}
+
+void LetRotGame::activate_cast(int cast_id)
+{
+	auto it = m_casts.find(cast_id);
+	if (it != m_casts.end())
+	{
+		const Cast& cast = it->second;
+		m_word_1 = cast.word_1;
+		m_word_2 = cast.word_2;
+		m_execute_command_cnt = cast.execute_comm_cnt;
+	}
+}
+
 void LetRotGame::execute_command(int id)
 {
 	auto it = m_commands.find(id);
@@ -92,7 +123,7 @@ void LetRotGame::execute_command(int id)
 		(this->*it->second.body)();
 }
 
-int LetRotGame::get_win_k() const
+int LetRotGame::get_solve_k() const
 {
 	int res = 0;
 	for (int i = 0; i < WORD_LENGTH; ++i)
@@ -105,17 +136,17 @@ int LetRotGame::get_win_k() const
 	return res;
 }
 
-int LetRotGame::get_min_win_k() const
+int LetRotGame::get_min_solve_k() const
 {
 	return 0;
 }
 
-int LetRotGame::get_max_win_k() const
+int LetRotGame::get_max_solve_k() const
 {
 	return WORD_LENGTH * 2;
 }
 
-bool LetRotGame::is_win() const
+bool LetRotGame::is_solve() const
 {
 	return (m_word_1.compare(m_win_word_1) == 0) &&
 		(m_word_2.compare(m_win_word_2) == 0);
@@ -124,6 +155,15 @@ bool LetRotGame::is_win() const
 bool LetRotGame::is_loose() const
 {
 	return (m_execute_command_cnt > m_execute_command_max);
+}
+
+void LetRotGame::reset()
+{
+	m_word_1 = m_orig_word_1;
+	m_word_2 = m_orig_word_2;
+	m_execute_command_cnt = 0;
+	m_casts.clear();
+	m_cast_id_counter = 0;
 }
 
 void LetRotGame::rotate_left_clockwise()

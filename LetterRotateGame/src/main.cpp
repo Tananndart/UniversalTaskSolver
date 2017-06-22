@@ -16,7 +16,7 @@ void main()
 
 	//game->play(cin, cout);
 
-	slv::Solver::Ptr solver = make_shared<slv::Solver>();
+	slv::SolverPtr solver = make_shared<slv::Solver>();
 	solver->execute(cout, game);
 
 	char ch_stop;
