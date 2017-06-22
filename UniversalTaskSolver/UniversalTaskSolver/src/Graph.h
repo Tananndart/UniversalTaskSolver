@@ -33,7 +33,7 @@ namespace grp
 		Graph<T>();
 
 		// create
-		NodePtr<T> create_node(const int data);
+		NodePtr<T> create_node(const T& data);
 		LinkPtr<T> create_link();
 		LinkPtr<T> create_link(const NodePtr<T> first_node,
 			const NodePtr<T> second_node, int weight);
@@ -140,7 +140,7 @@ namespace grp
 	{}
 
 	template<typename T>
-	NodePtr<T> Graph<T>::create_node(const int data)
+	NodePtr<T> Graph<T>::create_node(const T& data)
 	{
 		NodePtr<T> node = std::make_shared<Node<T>>(get_new_node_id());
 		node->set_data(data);
