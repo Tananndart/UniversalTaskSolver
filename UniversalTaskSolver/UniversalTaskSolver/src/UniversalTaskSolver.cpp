@@ -1,4 +1,5 @@
 #include "UniversalTaskSolver.h"
+#include "GreedyAlg.h"
 
 namespace slv
 {
@@ -8,7 +9,18 @@ namespace slv
 	{
 		if (task)
 		{
+			// create TaskGraph
+			TaskGraphPtr graph = make_shared<TaskGraph>();
+			if (!graph->init(task))
+				return;
 
+			// create greedy alg
+			GreedyAlgPtr greedy_alg = make_shared<GreedyAlg>();
+
+			// execute greedy alg
+			vector<int> res_commands = greedy_alg->execute(graph);
+			for (unsigned i = 0; i < res_commands.size(); ++i)
+				stream << task->get_command_name(res_commands[i]) << endl;
 
 
 			/*

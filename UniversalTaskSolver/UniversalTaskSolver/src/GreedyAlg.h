@@ -7,15 +7,17 @@
 
 namespace slv
 {
+	class GreedyAlg;
+	typedef std::shared_ptr<GreedyAlg> GreedyAlgPtr;
+
 	class GreedyAlg
 	{
 	public:
 		GreedyAlg() {}
 
-		std::vector<int> execute(ITaskPtr task);
+		std::vector<int> execute(TaskGraphPtr graph);
 
 	private:
-		ITaskPtr m_task;
 		TaskGraphPtr m_graph;
 	};
 }

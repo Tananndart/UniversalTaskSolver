@@ -4,7 +4,7 @@ using namespace std;
 using namespace slv;
 
 // execute
-std::vector<int> GreedyAlg::execute(ITaskPtr task)
+std::vector<int> GreedyAlg::execute(TaskGraphPtr graph)
 {
 	/*
 	if (!game)
