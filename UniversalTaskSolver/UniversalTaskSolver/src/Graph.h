@@ -122,9 +122,11 @@ namespace grp
 		void set_nodes(std::pair<NodePtr<T>, NodePtr<T>> nodes);
 
 		NodePtr<T> get_first_node() const;
+		int get_first_node_id() const;
 		void set_first_node(NodePtr<T> node);
 
 		NodePtr<T> get_second_node() const;
+		int get_second_node_id() const;
 		void set_second_node(NodePtr<T> node);		
 
 	private:
@@ -447,6 +449,12 @@ namespace grp
 		return m_first_node.expired() ? nullptr : m_first_node.lock();
 	}
 
+	template<typename T>
+	inline int Link<T>::get_first_node_id() const
+	{
+		return m_first_node.expired() ? -1 : m_first_node.lock()->id();
+	}
+
 	template <typename T>
 	void Link<T>::set_first_node(NodePtr<T> node)
 	{
@@ -458,6 +466,12 @@ namespace grp
 	NodePtr<T> Link<T>::get_second_node() const
 	{
 		return m_second_node.expired() ? nullptr : m_second_node.lock();
+	}
+
+	template<typename T>
+	inline int Link<T>::get_second_node_id() const
+	{
+		return m_second_node.expired() ? -1 : m_second_node.lock()->id();
 	}
 
 	template <typename T>
