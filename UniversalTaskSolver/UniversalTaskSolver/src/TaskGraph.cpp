@@ -131,4 +131,5 @@ void slv::TaskGraph::create_neighbors(TNodePtr node)
 		// back to origin cast
 		m_task->activate_cast(node_cast);
 	}
+	int a = 2 + 2;
 }

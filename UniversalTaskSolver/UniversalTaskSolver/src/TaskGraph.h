@@ -5,10 +5,10 @@
 
 namespace slv
 {
-	class TaskGraph;
+	class TEST_API TaskGraph;
 	typedef std::shared_ptr<TaskGraph> TaskGraphPtr;
 
-	class TaskGraph
+	class TEST_API TaskGraph
 	{
 	public:
 		TaskGraph();
