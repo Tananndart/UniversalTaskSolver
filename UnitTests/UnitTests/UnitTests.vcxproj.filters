@@ -11,15 +11,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="..\..\LetterRotateGame\src\LetterRotateGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="unittest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unittest.cpp">
+    <ClCompile Include="..\..\LetterRotateGame\src\LetterRotateGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
