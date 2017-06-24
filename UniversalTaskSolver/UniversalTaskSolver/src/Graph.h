@@ -34,7 +34,6 @@ namespace grp
 
 		// create
 		NodePtr<T> create_node(const T& data);
-		LinkPtr<T> create_link();
 		LinkPtr<T> create_link(const NodePtr<T> first_node,
 			const NodePtr<T> second_node, int weight);
 		LinkPtr<T> create_link(int first_node_id, int second_node_id, int weight);
@@ -152,48 +151,56 @@ namespace grp
 	}
 
 	template<typename T>
-	LinkPtr<T> Graph<T>::create_link()
-	{
-		LinkPtr<T> link = std::make_shared<Link<T>>(get_new_link_id());
-		m_links[link->id()] = link;
-		return link;
-	}
-
-	template<typename T>
 	LinkPtr<T> Graph<T>::create_link(const NodePtr<T> first_node, const NodePtr<T> second_node, int weight)
 	{
 		if (m_nodes.find(first_node->id()) == m_nodes.end() ||
 			m_nodes.find(second_node->id()) == m_nodes.end())
 			return nullptr;
 
+		// create link
 		LinkPtr<T> link = std::make_shared<Link<T>>(get_new_link_id());
 		link->set_weight(weight);
 		link->set_first_node(first_node);
 		link->set_second_node(second_node);
 
+		// add lnk in graph
 		m_links[link->id()] = link;
+
+		// add lnk in nodes
+		first_node->get_links().push_back(link);
+		second_node->get_links().push_back(link);
+
 		return link;
 	}
 
 	template<typename T>
 	LinkPtr<T> Graph<T>::create_link(int first_node_id, int second_node_id, int weight)
 	{
+		// get first node
 		NodePtr<T> first_node = nullptr;
 		auto first_it = m_nodes.find(first_node_id);
 		if (first_it != m_nodes.end())
 			first_node = first_it->second;
 
+		// get second node
 		NodePtr<T> second_node = nullptr;
 		auto second_it = m_nodes.find(second_node_id);
 		if (second_it != m_nodes.end())
 			second_node = second_it->second;
 
+		// create link
 		LinkPtr<T> link = std::make_shared<Link<T>>(get_new_link_id());
 		link->set_weight(weight);
 		link->set_first_node(first_node);
 		link->set_second_node(second_node);
 
+		// add link in graph
 		m_links[link->id()] = link;
+
+		// add link in nodes
+		first_node->get_links().push_back(link);
+		second_node->get_links().push_back(link);
+
 		return link;
 	}
 
@@ -242,6 +249,11 @@ namespace grp
 	void Graph<T>::delete_all_links()
 	{
 		m_links.clear();
+		for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it)
+		{
+			auto node = it->second;
+			node->get_links().clear();
+		}
 	}
 
 	template<typename T>
