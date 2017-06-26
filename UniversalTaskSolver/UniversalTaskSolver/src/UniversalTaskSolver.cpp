@@ -18,10 +18,15 @@ namespace slv
 			GreedyAlgPtr greedy_alg = make_shared<GreedyAlg>();
 
 			// execute greedy alg
-			vector<int> res_commands = greedy_alg->execute(graph);
+			const int MAX_EXECUTE_COMMANDS = 100;
+			vector<int> res_commands;
+			if (greedy_alg->execute(graph, res_commands, MAX_EXECUTE_COMMANDS, &stream))
+				stream << "IS SOLVE!!!" << endl;
+			else stream << "EPIC FAIL!" << endl;
+
 			for (unsigned i = 0; i < res_commands.size(); ++i)
 				stream << task->get_command_name(res_commands[i]) << endl;
-
+			
 
 			/*
 			// solve game for test
