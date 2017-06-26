@@ -11,6 +11,9 @@ slv::TaskGraph::TaskGraph()
 {
 	m_grpah = std::make_shared<grp::Graph<NodeData>>();
 	m_root_node = m_grpah->create_node(NodeData(-1, -1));
+
+	m_task = nullptr;
+	m_current_node = nullptr;
 }
 
 bool slv::TaskGraph::init(ITaskPtr task)
@@ -27,6 +30,9 @@ bool slv::TaskGraph::init(ITaskPtr task)
 	// create neighbors from root node
 	create_neighbors(m_root_node);
 
+	// set current node
+	m_current_node = m_root_node;
+
 	return true;
 }
 
@@ -41,11 +47,19 @@ int slv::TaskGraph::get_node_command_id(int node_id) const
 	return node ? node->get_data().comm_id : -1;
 }
 
+std::string slv::TaskGraph::get_command_name(int comm_id) const
+{
+	return m_task->get_command_name(comm_id);
+}
+
 void slv::TaskGraph::get_node_neighbors_ids(int node_id, std::vector<int>& out_neighbors_ids)
 {
 	TNodePtr node = m_grpah->get_node(node_id);
 	if (!node)
 		return;
+
+	// udate current node
+	m_current_node = node;
 
 	// check or create neighbors
 	if (!exist_neighbors(node))
@@ -94,6 +108,34 @@ int slv::TaskGraph::get_link_weight(int node_id_1, int node_id_2) const
 	return -1;
 }
 
+bool slv::TaskGraph::is_solve(int node_id) const
+{
+	if (node_id == m_current_node->id())
+		return m_task->is_solve();
+
+	const TNodePtr node = m_grpah->get_node(node_id);
+
+	m_task->activate_cast(node->get_data().cast_id);
+	const bool res = m_task->is_solve();
+	m_task->activate_cast(m_current_node->get_data().cast_id);
+
+	return res;
+}
+
+bool slv::TaskGraph::is_loose(int node_id) const
+{
+	if (node_id == m_current_node->id())
+		return m_task->is_loose();
+
+	const TNodePtr node = m_grpah->get_node(node_id);
+
+	m_task->activate_cast(node->get_data().cast_id);
+	const bool res = m_task->is_loose();
+	m_task->activate_cast(m_current_node->get_data().cast_id);
+
+	return res;
+}
+
 
 bool slv::TaskGraph::exist_neighbors(const TNodePtr node) const
 {
@@ -131,5 +173,4 @@ void slv::TaskGraph::create_neighbors(TNodePtr node)
 		// back to origin cast
 		m_task->activate_cast(node_cast);
 	}
-	int a = 2 + 2;
 }

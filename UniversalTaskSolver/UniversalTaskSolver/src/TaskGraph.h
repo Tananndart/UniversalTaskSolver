@@ -18,9 +18,14 @@ namespace slv
 		int get_root_node_id() const;
 
 		int get_node_command_id(int node_id) const;
+		std::string get_command_name(int comm_id) const;
+
 		void get_node_neighbors_ids(int node_id, std::vector<int>& out_neighbors_ids);
 
 		int get_link_weight(int node_id_1, int node_id_2) const;
+
+		bool is_solve(int node_id) const;
+		bool is_loose(int node_id) const;
 
 	private:
 		struct NodeData;
@@ -31,6 +36,7 @@ namespace slv
 
 	private:
 		TNodePtr m_root_node;
+		TNodePtr m_current_node;
 		ITaskPtr m_task;
 		grp::GraphPtr<NodeData> m_grpah;
 
