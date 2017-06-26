@@ -35,6 +35,7 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 		const Command& comm = it->second;
 		out_stream << comm.name << " - " << comm.desc << endl;
 	}
+	out_stream << "rs - reset game" << endl;
 	out_stream << endl;
 
 	out_stream << "Are you ready? Go!" << endl;
@@ -43,6 +44,14 @@ void LetRotGame::play(istream& in_stream, ostream& out_stream)
 	{
 		// TODO: add user input validation
 		in_stream >> str;
+
+		if (str.compare("rs") == 0)
+		{
+			reset();
+			out_stream << "reset" << endl;
+			print_state(out_stream);
+			continue;
+		}
 
 		// OPT: bad map use =(
 		for (auto it = m_commands.begin(); it != m_commands.end(); ++it)
