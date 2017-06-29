@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UniversalTaskSolver", "..\U
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "..\UnitTests\UnitTests\UnitTests.vcxproj", "{1D48345A-011D-4362-9F68-DA412AF94641}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BallsAndHolesGame", "..\BallsAndHolesGame\BallsAndHolesGame.vcxproj", "{376FD50B-252A-41F4-ACE4-9B9109129162}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BallsAndHolesTests", "..\BallsAndHolesTests\BallsAndHolesTests.vcxproj", "{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +45,22 @@ Global
 		{1D48345A-011D-4362-9F68-DA412AF94641}.Release|x64.Build.0 = Release|x64
 		{1D48345A-011D-4362-9F68-DA412AF94641}.Release|x86.ActiveCfg = Release|Win32
 		{1D48345A-011D-4362-9F68-DA412AF94641}.Release|x86.Build.0 = Release|Win32
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Debug|x64.ActiveCfg = Debug|x64
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Debug|x64.Build.0 = Debug|x64
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Debug|x86.ActiveCfg = Debug|Win32
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Debug|x86.Build.0 = Debug|Win32
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Release|x64.ActiveCfg = Release|x64
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Release|x64.Build.0 = Release|x64
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Release|x86.ActiveCfg = Release|Win32
+		{376FD50B-252A-41F4-ACE4-9B9109129162}.Release|x86.Build.0 = Release|Win32
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Debug|x64.ActiveCfg = Debug|x64
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Debug|x64.Build.0 = Debug|x64
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Debug|x86.ActiveCfg = Debug|Win32
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Debug|x86.Build.0 = Debug|Win32
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Release|x64.ActiveCfg = Release|x64
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Release|x64.Build.0 = Release|x64
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Release|x86.ActiveCfg = Release|Win32
+		{B668FB59-CE65-4CC4-AF2B-11E6969A27B2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
