@@ -25,8 +25,8 @@ public:
 	virtual int number() const;
 	virtual void set_number(const int number);
 
-	virtual void print(std::ostream&) const = 0;
-	virtual void draw(std::ostream&) const = 0;
+	virtual void print(std::ostream&) const;
+	virtual void draw(std::ostream&) const;
 
 protected:
 	int m_id;

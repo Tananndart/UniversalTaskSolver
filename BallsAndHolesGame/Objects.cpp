@@ -29,6 +29,16 @@ void BaseObject::set_number(const int number)
 	m_number = number;
 }
 
+void BaseObject::print(std::ostream & out) const
+{
+	out << "BaseObject[" << m_id << ']' << endl;
+}
+
+void BaseObject::draw(std::ostream & out) const
+{
+	out << '?';
+}
+
 ///////////////////////// Ball /////////////////////////
 
 Ball::Ball(const int id, const int number)
