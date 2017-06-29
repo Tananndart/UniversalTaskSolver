@@ -101,7 +101,7 @@ inline void Board::get_objects(OutIt out_iterator)
 template<typename OutIt>
 inline void Board::get_objects(int col, int row, OutIt out_iterator)
 {
-	if (col > m_col_count || row > m_row_count)
+	if (col >= m_col_count || row >= m_row_count)
 		return;
 
 	const Cell & cell = m_table[col][row];
@@ -115,7 +115,7 @@ inline void Board::get_objects(int col, int row, OutIt out_iterator)
 template <typename ObjType, typename OutIt>
 inline void Board::get_objects(int col, int row, OutIt out_iterator)
 {
-	if (col > m_col_count || row > m_row_count)
+	if (col >= m_col_count || row >= m_row_count)
 		return;
 
 	const Cell & cell = m_table[col][row];

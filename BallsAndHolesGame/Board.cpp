@@ -74,7 +74,7 @@ void Board::delete_all_objects()
 
 void Board::delete_all_objects(int col, int row)
 {
-	if (col > m_col_count || row > m_row_count)
+	if (col >= m_col_count || row >= m_row_count)
 		return;
 
 	Cell & cell = m_table[col][row];
@@ -94,7 +94,7 @@ int Board::get_object_count() const
 
 int Board::get_object_count(int col, int row) const
 {
-	if (col > m_col_count || row > m_row_count)
+	if (col >= m_col_count || row >= m_row_count)
 		return -1;
 
 	return m_table[col][row].objects_ids.size();
