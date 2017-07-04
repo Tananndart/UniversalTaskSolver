@@ -100,6 +100,17 @@ int Board::get_object_count(int col, int row) const
 	return m_table[col][row].objects_ids.size();
 }
 
+std::pair<int, int> Board::get_object_pos(int obj_id) const
+{
+	auto it = m_wrap_objects.find(obj_id);
+	if (it == m_wrap_objects.end())
+		return make_pair(-1, -1);
+
+	const WrapBaseObject & wrap_obj = it->second;
+
+	return make_pair(wrap_obj.col, wrap_obj.row);
+}
+
 BaseObjPtr Board::get_object(int obj_id)
 {
 	auto obj_it = m_wrap_objects.find(obj_id);

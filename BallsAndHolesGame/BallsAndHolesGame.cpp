@@ -9,6 +9,7 @@ BallsAndHolesGame::BallsAndHolesGame()
 {
 	m_board = nullptr;
 	m_id_counter = 0;
+	m_wall_count = m_ball_count = m_hole_count = 0;
 }
 
 void BallsAndHolesGame::create_board(int col_count, int row_count)
@@ -21,6 +22,8 @@ void BallsAndHolesGame::create_wall(int col_1, int row_1, int col_2, int row_2)
 	const int wall_id = calculate_wall_id(col_1, row_1, col_2, row_2);
 	WallPtr wall = make_shared<Wall>(wall_id);
 	m_board->add_object(wall);
+
+	m_wall_count++;
 }
 
 void BallsAndHolesGame::create_ball(int number, int col, int row)
@@ -28,6 +31,8 @@ void BallsAndHolesGame::create_ball(int number, int col, int row)
 	const int ball_id = get_new_id();
 	BallPtr ball = make_shared<Ball>(ball_id, number);
 	m_board->add_object(col, row, ball);
+
+	m_ball_count++;
 }
 
 void BallsAndHolesGame::create_hole(int number, int col, int row)
@@ -35,6 +40,8 @@ void BallsAndHolesGame::create_hole(int number, int col, int row)
 	const int hole_id = get_new_id();
 	HolePtr hole = make_shared<Hole>(hole_id, number);
 	m_board->add_object(col, row, hole);
+	
+	m_hole_count++;
 }
 
 void BallsAndHolesGame::bind_ball_with_hole(int ball_number, int hole_number)
@@ -74,6 +81,60 @@ void BallsAndHolesGame::draw_board(std::ostream & out_stream) const
 			else
 				out_stream << "====";
 		}
+	}
+
+	out_stream << endl;
+}
+
+void BallsAndHolesGame::incline_board_left()
+{
+	vector<BallPtr> balls;
+	get_all_balls(balls);
+
+	for (unsigned i = 0; i < balls.size(); ++i)
+	{
+		auto pos = m_board->get_object_pos(balls[i]->id());
+		move_ball_left(pos.first, pos.second, 0, balls[i]);
+	}
+}
+
+void BallsAndHolesGame::incline_board_right()
+{
+	vector<BallPtr> balls;
+	get_all_balls(balls);
+
+	for (unsigned i = 0; i < balls.size(); ++i)
+	{
+		auto pos = m_board->get_object_pos(balls[i]->id());
+		const int fin_col = m_board->get_col_count() - 1;
+
+		move_ball_right(pos.first, pos.second, fin_col, balls[i]);
+	}
+}
+
+void BallsAndHolesGame::incline_board_up()
+{
+	vector<BallPtr> balls;
+	get_all_balls(balls);
+
+	for (unsigned i = 0; i < balls.size(); ++i)
+	{
+		auto pos = m_board->get_object_pos(balls[i]->id());
+		move_ball_up(pos.first, pos.second, 0, balls[i]);
+	}
+}
+
+void BallsAndHolesGame::incline_board_down()
+{
+	vector<BallPtr> balls;
+	get_all_balls(balls);
+
+	for (unsigned i = 0; i < balls.size(); ++i)
+	{
+		auto pos = m_board->get_object_pos(balls[i]->id());
+		const int fin_row = m_board->get_row_count() - 1;
+
+		move_ball_down(pos.first, pos.second, fin_row, balls[i]);
 	}
 }
 
@@ -117,7 +178,181 @@ void BallsAndHolesGame::draw_objects_in_cell(int col, int row, std::ostream & ou
 			return;
 		}
 	}
-	
+}
+
+void BallsAndHolesGame::get_all_balls(vector<BallPtr>& balls) const
+{
+	balls.reserve(m_ball_count);
+	m_board->get_objects<Ball>(std::back_inserter(balls));
+}
+
+void BallsAndHolesGame::move_ball_right(const int start_col, const int row, const int fin_col, BallPtr ball)
+{
+	int next_col = 0;
+	for (int col = start_col; col < fin_col; ++col)
+	{
+		next_col = col + 1;
+
+		bool is_accept, is_cancel, is_push_hole;
+		handle_move_ball_in_cell(col, row, next_col, row, ball,
+			is_accept, is_cancel, is_push_hole);
+
+		if (is_accept)
+			continue;
+
+		if (is_cancel)
+		{
+			next_col--;
+			break;
+		}
+
+		if (is_push_hole)
+		{
+			m_board->delete_object(ball->id());
+			return;
+		}
+	}
+
+	m_board->delete_object(ball->id());
+	m_board->add_object(next_col, row, ball);
+}
+
+void BallsAndHolesGame::move_ball_left(const int start_col, const int row, const int fin_col, BallPtr ball)
+{
+	int next_col = 0;
+	for (int col = start_col; col > fin_col; --col)
+	{
+		next_col = col - 1;
+
+		bool is_accept, is_cancel, is_push_hole;
+		handle_move_ball_in_cell(col, row, next_col, row, ball,
+			is_accept, is_cancel, is_push_hole);
+
+		if (is_accept)
+			continue;
+
+		if (is_cancel)
+		{
+			next_col++;
+			break;
+		}
+
+		if (is_push_hole)
+		{
+			m_board->delete_object(ball->id());
+			return;
+		}
+	}
+
+	m_board->delete_object(ball->id());
+	m_board->add_object(next_col, row, ball);
+}
+
+void BallsAndHolesGame::move_ball_up(const int col, const int start_row, const int fin_row, BallPtr ball)
+{
+	int next_row = 0;
+	for (int row = start_row; row > fin_row; -row)
+	{
+		next_row = row - 1;
+
+		bool is_accept, is_cancel, is_push_hole;
+		handle_move_ball_in_cell(col, row, col, next_row, ball,
+			is_accept, is_cancel, is_push_hole);
+
+		if (is_accept)
+			continue;
+
+		if (is_cancel)
+		{
+			next_row++;
+			break;
+		}
+
+		if (is_push_hole)
+		{
+			m_board->delete_object(ball->id());
+			return;
+		}
+	}
+
+	m_board->delete_object(ball->id());
+	m_board->add_object(col, next_row, ball);
+}
+
+void BallsAndHolesGame::move_ball_down(const int col, const int start_row, const int fin_row, BallPtr ball)
+{
+	int next_row = 0;
+	for (int row = start_row; row < fin_row; ++row)
+	{
+		next_row = row + 1;
+
+		bool is_accept, is_cancel, is_push_hole;
+		handle_move_ball_in_cell(col, row, col, next_row, ball,
+			is_accept, is_cancel, is_push_hole);
+
+		if (is_accept)
+			continue;
+
+		if (is_cancel)
+		{
+			next_row--;
+			break;
+		}
+
+		if (is_push_hole)
+		{
+			m_board->delete_object(ball->id());
+			return;
+		}
+	}
+
+	m_board->delete_object(ball->id());
+	m_board->add_object(col, next_row, ball);
+}
+
+void BallsAndHolesGame::handle_move_ball_in_cell(int col, int row, int next_col, int next_row, BallPtr ball, 
+	bool & out_is_accept, bool & out_is_cancel, bool & out_is_push_hole)
+{
+	out_is_accept = false;
+	out_is_cancel = false;
+	out_is_push_hole = false;
+
+	// check wall
+	if (check_wall(col, row, next_col, next_row))
+	{
+		out_is_cancel = true;
+		return;
+	}
+
+	// check objects
+	const int obj_count = m_board->get_object_count(next_col, next_row);
+	if (obj_count > 0)
+	{
+		// check balls
+		if (m_board->get_object_count<Ball>(next_col, next_row) > 0)
+		{
+			out_is_cancel = true;
+			return;
+		}
+
+		// check holes
+		vector<HolePtr> holes;
+		holes.reserve(obj_count);
+		m_board->get_objects<Hole>(next_col, next_row, back_inserter(holes));
+		if (!holes.empty())
+		{
+			HolePtr hole = holes[0];
+			if (!hole->is_closed())
+			{
+				hole->push_ball(ball);
+
+				out_is_push_hole = true;
+				return;
+			}
+		}
+	}
+
+	out_is_accept = true;
 }
 
 inline int BallsAndHolesGame::get_new_id()

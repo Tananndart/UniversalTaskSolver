@@ -30,8 +30,15 @@ public:
 	// info
 	int get_object_count() const;
 	int get_object_count(int col, int row) const;
+	std::pair<int, int> get_object_pos(int obj_id) const;
 	int get_col_count() const;
 	int get_row_count() const;
+
+	template <typename ObjType>
+	int get_object_count(const int obj_id);
+
+	template <typename ObjType>
+	int get_object_count(const int col, const int row);
 
 	// get objects
 	BaseObjPtr get_object(int obj_id);
@@ -79,6 +86,36 @@ struct Board::Cell
 	std::set<int> objects_ids;
 	int col, row;
 };
+
+template<typename ObjType>
+inline int Board::get_object_count(const int obj_id)
+{
+	int counter = 0;
+	for (auto it = m_wrap_objects.begin(); it != m_wrap_objects.end(); ++it)
+		if (std::dynamic_pointer_cast<ObjType>(it->second.obj))
+			counter++;
+
+	return counter;
+}
+
+template<typename ObjType>
+inline int Board::get_object_count(const int col, const int row)
+{
+	if (col >= m_col_count || row >= m_row_count)
+		return -1;
+
+	int counter = 0;
+
+	const Cell & cell = m_table[col][row];
+	for (auto it = cell.objects_ids.cbegin(); it != cell.objects_ids.cend(); ++it)
+	{
+		const int obj_id = *it;
+		if (std::dynamic_pointer_cast<ObjType>(m_wrap_objects[obj_id].obj))
+			counter++;
+	}
+
+	return counter;
+}
 
 template<typename OutIt>
 inline void Board::get_objects(OutIt out_iterator)

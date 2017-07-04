@@ -19,6 +19,15 @@ void main()
 	game->create_wall(0, 1, 0, 2);
 	game->create_wall(2, 1, 3, 1);
 
+	game->bind_ball_with_hole(1, 1);
+	game->bind_ball_with_hole(2, 2);
+
+	game->draw_board(cout);
+	
+	game->incline_board_right();
+	game->draw_board(cout);
+
+	game->incline_board_left();
 	game->draw_board(cout);
 	
 	char ch;
