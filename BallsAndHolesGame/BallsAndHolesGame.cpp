@@ -49,6 +49,84 @@ void BallsAndHolesGame::bind_ball_with_hole(int ball_number, int hole_number)
 	m_balls_holes[ball_number] = hole_number;
 }
 
+void BallsAndHolesGame::play(std::ostream & out, std::istream & in)
+{
+	out << "Let's go!" << endl;
+
+	out << "Commands:" << endl;
+	out << "W - up board" << endl;
+	out << "S - down board" << endl;
+	out << "A - left board" << endl;
+	out << "D - right board" << endl;
+
+	draw_board(out);
+
+	while (!is_win())
+	{
+		if (is_loose())
+		{
+			out << "Epic fail!" << endl;
+			return;
+		}
+
+		char ch;
+		in >> ch;
+
+		if (ch == 'W') incline_board_up();
+		if (ch == 'S') incline_board_down();
+		if (ch == 'A') incline_board_left();
+		if (ch == 'D') incline_board_right();
+
+		out << endl;
+
+		draw_board(out);
+	}
+
+	out << "YOU WIN!" << endl;
+}
+
+bool BallsAndHolesGame::is_win() const
+{
+	vector<HolePtr> holes;
+	holes.reserve(m_hole_count);
+	m_board->get_objects<Hole>(back_inserter(holes));
+
+	for (unsigned i = 0; i < holes.size(); ++i)
+	{
+		const HolePtr hole = holes[i];
+
+		if (!hole->is_closed())
+			return false;
+
+		int ball_numb = hole->get_ball()->number();
+		if (!check_bind_ball_with_hole(ball_numb, hole->number()))
+			return false;
+	}
+
+	return true;
+}
+
+bool BallsAndHolesGame::is_loose() const
+{
+	vector<HolePtr> holes;
+	holes.reserve(m_hole_count);
+	m_board->get_objects<Hole>(back_inserter(holes));
+
+	for (unsigned i = 0; i < holes.size(); ++i)
+	{
+		const HolePtr hole = holes[i];
+
+		if (hole->is_closed())
+		{
+			int ball_numb = hole->get_ball()->number();
+			if (!check_bind_ball_with_hole(ball_numb, hole->number()))
+				return true;
+		}
+	}
+
+	return false;
+}
+
 void BallsAndHolesGame::draw_board(std::ostream & out_stream) const
 {
 	const int col_count = m_board->get_col_count();
@@ -154,7 +232,8 @@ void BallsAndHolesGame::draw_objects_in_cell(int col, int row, std::ostream & ou
 
 	if (obj_count == 1)
 	{
-		out_stream << ' ';
+		out_stream << objects[0]->number();
+		//out_stream << ' ';
 		objects[0]->draw(out_stream);
 		out_stream << ' ';
 		return;
@@ -164,7 +243,8 @@ void BallsAndHolesGame::draw_objects_in_cell(int col, int row, std::ostream & ou
 	{
 		if (dynamic_pointer_cast<BallPtr>(objects[i]))
 		{
-			out_stream << ' ';
+			out_stream << objects[i]->number();
+			//out_stream << ' ';
 			objects[i]->draw(out_stream);
 			out_stream << ' ';
 			return;
@@ -172,7 +252,8 @@ void BallsAndHolesGame::draw_objects_in_cell(int col, int row, std::ostream & ou
 
 		if (dynamic_pointer_cast<HolePtr>(objects[i]))
 		{
-			out_stream << ' ';
+			out_stream << objects[i]->number();
+			//out_stream << ' ';
 			objects[i]->draw(out_stream);
 			out_stream << ' ';
 			return;
@@ -184,6 +265,15 @@ void BallsAndHolesGame::get_all_balls(vector<BallPtr>& balls) const
 {
 	balls.reserve(m_ball_count);
 	m_board->get_objects<Ball>(std::back_inserter(balls));
+}
+
+bool BallsAndHolesGame::check_bind_ball_with_hole(const int ball_number, const int hole_number) const
+{
+	auto it = m_balls_holes.find(ball_number);
+	if (it != m_balls_holes.end())
+		return (hole_number == it->second);
+
+	return false;
 }
 
 void BallsAndHolesGame::move_ball_right(const int start_col, const int row, const int fin_col, BallPtr ball)
@@ -251,7 +341,7 @@ void BallsAndHolesGame::move_ball_left(const int start_col, const int row, const
 void BallsAndHolesGame::move_ball_up(const int col, const int start_row, const int fin_row, BallPtr ball)
 {
 	int next_row = 0;
-	for (int row = start_row; row > fin_row; -row)
+	for (int row = start_row; row > fin_row; --row)
 	{
 		next_row = row - 1;
 

@@ -10,14 +10,19 @@ class BallsAndHolesGame
 public:
 	BallsAndHolesGame();
 
+	// init
 	void create_board(int col_count, int row_count);
-	
 	void create_wall(int col_1, int row_1, int col_2, int row_2);
 	void create_ball(int number, int col, int row);
 	void create_hole(int number, int col, int row);
-
 	void bind_ball_with_hole(int ball_number, int hole_number);
 
+	void play(std::ostream& out, std::istream& in);
+
+	bool is_win() const;
+	bool is_loose() const;
+
+	// draw
 	void draw_board(std::ostream& out_stream) const;
 
 	// commands
@@ -53,5 +58,6 @@ private:
 	// service
 	int get_new_id();
 	void get_all_balls(std::vector<BallPtr> & balls) const;
+	bool check_bind_ball_with_hole(const int ball_number, const int hole_number) const;
 };
 

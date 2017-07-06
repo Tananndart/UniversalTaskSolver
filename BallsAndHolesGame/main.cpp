@@ -22,6 +22,9 @@ void main()
 	game->bind_ball_with_hole(1, 1);
 	game->bind_ball_with_hole(2, 2);
 
+	game->play(cout, cin);
+
+	/*
 	game->draw_board(cout);
 	
 	game->incline_board_right();
@@ -29,7 +32,7 @@ void main()
 
 	game->incline_board_left();
 	game->draw_board(cout);
-	
+	*/
 	char ch;
 	cin >> ch;
 }

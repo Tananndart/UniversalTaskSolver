@@ -70,13 +70,18 @@ Hole::Hole(int id, const int number)
 void Hole::push_ball(BallPtr ball)
 {
 	m_ball = ball;
+	m_is_closed = true;
 }
 
 BallPtr Hole::pop_ball()
 {
-	return m_ball;
+	BallPtr ball = m_ball;
+
 	m_ball.reset();
 	m_ball = nullptr;
+	m_is_closed = false;
+
+	return ball;
 }
 
 BallPtr Hole::get_ball() const
