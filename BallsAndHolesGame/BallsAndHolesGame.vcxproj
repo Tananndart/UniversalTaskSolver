@@ -89,6 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\UniversalTaskSolver\UniversalTaskSolver\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,6 +149,11 @@
     <ClCompile Include="src\Board.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Objects.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UniversalTaskSolver\UniversalTaskSolver\UniversalTaskSolver.vcxproj">
+      <Project>{087f2d05-4c7c-419d-b0da-30d631761447}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
