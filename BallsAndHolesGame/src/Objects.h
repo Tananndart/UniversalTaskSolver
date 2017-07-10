@@ -28,6 +28,8 @@ public:
 	virtual void print(std::ostream&) const;
 	virtual void draw(std::ostream&) const;
 
+	virtual BaseObjPtr clone() const;
+
 protected:
 	int m_id;
 	int m_number;
@@ -40,12 +42,15 @@ public:
 
 	void print(std::ostream& out_stream) const override;
 	void draw(std::ostream& out_stream) const override;
+
+	BaseObjPtr clone() const override;
 };
 
 class Hole : public BaseObject
 {
 public:
 	Hole(int id, const int number = 0);
+	Hole(const Hole & hole);
 
 	void push_ball(BallPtr ball);
 	BallPtr pop_ball();
@@ -55,6 +60,11 @@ public:
 
 	void print(std::ostream& out_stream) const override;
 	void draw(std::ostream& out_stream) const override;
+
+	BaseObjPtr clone() const override;
+
+	Hole & operator=(const Hole & hole);
+
 private:
 	bool m_is_closed;
 	BallPtr m_ball;
@@ -67,4 +77,6 @@ public:
 
 	void print(std::ostream& out_stream) const override;
 	void draw(std::ostream& out_stream) const override;
+
+	BaseObjPtr clone() const override;
 };

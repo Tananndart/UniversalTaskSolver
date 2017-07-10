@@ -39,6 +39,11 @@ void BaseObject::draw(std::ostream & out) const
 	out << '?';
 }
 
+BaseObjPtr BaseObject::clone() const
+{
+	return make_shared<BaseObject>(*this);
+}
+
 ///////////////////////// Ball /////////////////////////
 
 Ball::Ball(const int id, const int number)
@@ -57,6 +62,11 @@ void Ball::draw(std::ostream & out_stream) const
 	out_stream << '*';
 }
 
+BaseObjPtr Ball::clone() const
+{
+	return make_shared<Ball>(*this);
+}
+
 ///////////////////////// Hole /////////////////////////
 
 Hole::Hole(int id, const int number)
@@ -65,6 +75,18 @@ Hole::Hole(int id, const int number)
 	m_ball = nullptr;
 	m_is_closed = false;
 	m_number = number;
+}
+
+Hole::Hole(const Hole & hole)
+{
+	if (this == &hole)
+		return;
+
+	m_id = hole.id();
+	m_number = hole.number();
+	m_is_closed = hole.is_closed();
+
+	m_ball = make_shared<Ball>(*hole.get_ball().get());
 }
 
 void Hole::push_ball(BallPtr ball)
@@ -111,6 +133,25 @@ void Hole::draw(std::ostream & out_stream) const
 		out_stream << 'O';
 }
 
+BaseObjPtr Hole::clone() const
+{
+	return make_shared<Hole>(*this);
+}
+
+Hole & Hole::operator=(const Hole & hole)
+{
+	if (this == &hole)
+		return *this;
+
+	m_id = hole.id();
+	m_number = hole.number();
+	m_is_closed = hole.is_closed();
+
+	m_ball = make_shared<Ball>(*hole.get_ball().get());
+
+	return *this;
+}
+
 ///////////////////////// Wall /////////////////////////
 
 Wall::Wall(int id, const int number)
@@ -127,4 +168,9 @@ void Wall::print(std::ostream & out_stream) const
 void Wall::draw(std::ostream & out_stream) const
 {
 	out_stream << '#';
+}
+
+BaseObjPtr Wall::clone() const
+{
+	return make_shared<Wall>(*this);
 }

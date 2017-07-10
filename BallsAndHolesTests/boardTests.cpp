@@ -133,5 +133,67 @@ namespace BallsAndHolesTests
 					Assert::AreEqual(true, balls[i] != nullptr);
 			}
 		}
+
+		TEST_METHOD(tst_copy_constructor)
+		{
+			// init
+			BoardPtr board = std::make_shared<Board>(4, 4);
+
+			const int ball_1_id = 1;
+			BallPtr ball_1 = std::make_shared<Ball>(ball_1_id);
+
+			const int ball_2_id = 2;
+			BallPtr ball_2 = std::make_shared<Ball>(ball_2_id);
+
+			const int hole_id = 3;
+			HolePtr hole = std::make_shared<Hole>(hole_id);
+			hole->push_ball(ball_2);
+
+			const int wall_id = 4;
+			WallPtr wall = std::make_shared<Wall>(wall_id);
+
+			board->add_object(1, 1, ball_1);
+			board->add_object(2, 2, hole);
+			board->add_object(wall);
+
+			// execute
+			BoardPtr copy_board = std::make_shared<Board>(*board.get());
+
+			// check scale
+			Assert::AreEqual(board->get_col_count(), copy_board->get_col_count());
+			Assert::AreEqual(board->get_row_count(), copy_board->get_row_count());
+
+			// check objects
+			Assert::AreEqual(board->get_object_count(), copy_board->get_object_count());
+
+			// check balls
+			std::vector<BallPtr> balls;
+			copy_board->get_objects<Ball>(std::back_inserter(balls));
+			Assert::AreEqual(1, (int)balls.size());
+
+			ball_1->set_id(10);
+			Assert::AreEqual(ball_1_id, balls[0]->id());
+
+			// check hole
+			std::vector<HolePtr> holes;
+			copy_board->get_objects<Hole>(std::back_inserter(holes));
+			Assert::AreEqual(1, (int)holes.size());
+
+			Assert::AreEqual(true, holes[0]->is_closed());
+
+			ball_2->set_id(20);
+			Assert::AreEqual(ball_2_id, holes[0]->get_ball()->id());
+
+			hole->set_id(30);
+			Assert::AreEqual(hole_id, holes[0]->id());
+
+			// check wall
+			std::vector<WallPtr> walls;
+			copy_board->get_objects<Wall>(std::back_inserter(walls));
+			Assert::AreEqual(1, (int)walls.size());
+
+			wall->set_id(40);
+			Assert::AreEqual(wall_id, (int)walls[0]->id());
+		}
 	};
 }

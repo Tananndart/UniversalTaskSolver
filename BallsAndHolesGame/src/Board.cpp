@@ -126,3 +126,24 @@ int Board::get_row_count() const
 {
 	return m_row_count;
 }
+
+Board::WrapBaseObject::WrapBaseObject(const WrapBaseObject & wrap_obj)
+{
+	col = wrap_obj.col;
+	row = wrap_obj.row;
+
+	obj = wrap_obj.obj->clone();
+}
+
+Board::WrapBaseObject Board::WrapBaseObject::operator=(const WrapBaseObject & wrap_obj)
+{
+	if (this == &wrap_obj)
+		return *this;
+
+	col = wrap_obj.col;
+	row = wrap_obj.row;
+
+	obj = wrap_obj.obj->clone();
+
+	return *this;
+}

@@ -74,6 +74,9 @@ struct Board::WrapBaseObject
 	WrapBaseObject(int col, int row, BaseObjPtr object) :
 		col(col), row(row), obj(object) {}
 
+	WrapBaseObject(const WrapBaseObject& wrap_obj);
+	WrapBaseObject operator=(const WrapBaseObject& wrap_obj);
+
 	BaseObjPtr obj;
 	int col, row;
 };
