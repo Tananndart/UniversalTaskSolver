@@ -11,11 +11,11 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace BallsAndHolesTests
 {		
-	TEST_CLASS(TestBoard)
+	TEST_CLASS(clBoard)
 	{
 	public:
 		
-		TEST_METHOD(tst_add_object)
+		TEST_METHOD(f_add_object)
 		{	
 			// init
 			BoardPtr board = std::make_shared<Board>(4, 4);
@@ -36,7 +36,7 @@ namespace BallsAndHolesTests
 			Assert::AreEqual(2, board->get_object_count(0, 0));
 		}
 
-		TEST_METHOD(tst_delete_object)
+		TEST_METHOD(f_delete_object)
 		{
 			// init
 			BoardPtr board = std::make_shared<Board>(4, 4);
@@ -63,7 +63,7 @@ namespace BallsAndHolesTests
 			Assert::AreEqual(0, board->get_object_count());
 		}
 
-		TEST_METHOD(tst_get_objects)
+		TEST_METHOD(f_get_objects)
 		{
 			// init
 			BoardPtr board = std::make_shared<Board>(4, 4);
@@ -134,7 +134,7 @@ namespace BallsAndHolesTests
 			}
 		}
 
-		TEST_METHOD(tst_copy_constructor)
+		TEST_METHOD(f_copy_constructor)
 		{
 			// init
 			BoardPtr board = std::make_shared<Board>(4, 4);
