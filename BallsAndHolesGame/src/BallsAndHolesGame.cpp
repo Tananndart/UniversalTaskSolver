@@ -46,7 +46,7 @@ void BallsAndHolesGame::create_hole(int number, int col, int row)
 
 void BallsAndHolesGame::bind_ball_with_hole(int ball_number, int hole_number)
 {
-	m_balls_holes[ball_number] = hole_number;
+	m_ball_hole_numbers[ball_number] = hole_number;
 }
 
 void BallsAndHolesGame::play(std::ostream & out, std::istream & in)
@@ -269,8 +269,8 @@ void BallsAndHolesGame::get_all_balls(vector<BallPtr>& balls) const
 
 bool BallsAndHolesGame::check_bind_ball_with_hole(const int ball_number, const int hole_number) const
 {
-	auto it = m_balls_holes.find(ball_number);
-	if (it != m_balls_holes.end())
+	auto it = m_ball_hole_numbers.find(ball_number);
+	if (it != m_ball_hole_numbers.end())
 		return (hole_number == it->second);
 
 	return false;

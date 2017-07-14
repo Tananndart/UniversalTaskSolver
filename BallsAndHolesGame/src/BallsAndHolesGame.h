@@ -33,7 +33,7 @@ public:
 
 private:
 	BoardPtr m_board;
-	std::map<int, int> m_balls_holes;	// first - ball_id, second - hole_id
+	std::map<int, int> m_ball_hole_numbers;	// <ball_number, hole_number>
 	int m_id_counter;
 	int m_wall_count, m_ball_count, m_hole_count;
 
