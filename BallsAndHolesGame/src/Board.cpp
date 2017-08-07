@@ -26,7 +26,9 @@ void Board::add_object(int col, int row, const BaseObjPtr obj)
 	Cell & cell = m_table[col][row];
 	cell.objects_ids.insert(obj->id());
 
-	m_wrap_objects[obj->id()] = WrapBaseObject(col, row, obj);
+	WrapBaseObject wrap_obj = WrapBaseObject(col, row, obj);
+
+	m_wrap_objects[obj->id()] = wrap_obj;
 }
 
 BaseObjPtr Board::pop_object(int obj_id)
@@ -111,7 +113,7 @@ std::pair<int, int> Board::get_object_pos(int obj_id) const
 	return make_pair(wrap_obj.col, wrap_obj.row);
 }
 
-BaseObjPtr Board::get_object(int obj_id)
+BaseObjPtr Board::get_object(int obj_id) const
 {
 	auto obj_it = m_wrap_objects.find(obj_id);
 	return (obj_it == m_wrap_objects.end()) ? nullptr : obj_it->second.obj;

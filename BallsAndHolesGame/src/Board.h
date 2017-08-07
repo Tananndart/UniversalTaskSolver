@@ -35,25 +35,25 @@ public:
 	int get_row_count() const;
 
 	template <typename ObjType>
-	int get_object_count(const int obj_id);
+	int get_object_count(const int obj_id) const;
 
 	template <typename ObjType>
-	int get_object_count(const int col, const int row);
+	int get_object_count(const int col, const int row) const;
 
 	// get objects
-	BaseObjPtr get_object(int obj_id);
+	BaseObjPtr get_object(int obj_id) const;
 
 	template <typename OutIt>
-	void get_objects(OutIt out_iterator);
+	void get_objects(OutIt out_iterator) const;
 
 	template <typename ObjType, typename OutIt>
-	void get_objects(OutIt out_iterator);
+	void get_objects(OutIt out_iterator) const;
 
 	template <typename OutIt>
-	void get_objects(int col, int row, OutIt out_iterator);
+	void get_objects(int col, int row, OutIt out_iterator) const;
 
 	template <typename ObjType, typename OutIt>
-	void get_objects(int col, int row, OutIt out_iterator);
+	void get_objects(int col, int row, OutIt out_iterator) const;
 
 private:
 	struct WrapBaseObject;
@@ -91,7 +91,7 @@ struct Board::Cell
 };
 
 template<typename ObjType>
-inline int Board::get_object_count(const int obj_id)
+inline int Board::get_object_count(const int obj_id) const
 {
 	int counter = 0;
 	for (auto it = m_wrap_objects.begin(); it != m_wrap_objects.end(); ++it)
@@ -102,7 +102,7 @@ inline int Board::get_object_count(const int obj_id)
 }
 
 template<typename ObjType>
-inline int Board::get_object_count(const int col, const int row)
+inline int Board::get_object_count(const int col, const int row) const
 {
 	if (col >= m_col_count || row >= m_row_count)
 		return -1;
@@ -113,22 +113,24 @@ inline int Board::get_object_count(const int col, const int row)
 	for (auto it = cell.objects_ids.cbegin(); it != cell.objects_ids.cend(); ++it)
 	{
 		const int obj_id = *it;
-		if (std::dynamic_pointer_cast<ObjType>(m_wrap_objects[obj_id].obj))
-			counter++;
+		auto wrap_obj_it = m_wrap_objects.find(obj_id);
+		if (wrap_obj_it != m_wrap_objects.end())
+			if (std::dynamic_pointer_cast<ObjType>(wrap_obj_it->second.obj))
+				counter++;
 	}
 
 	return counter;
 }
 
 template<typename OutIt>
-inline void Board::get_objects(OutIt out_iterator)
+inline void Board::get_objects(OutIt out_iterator) const
 {
 	for (auto it = m_wrap_objects.begin(); it != m_wrap_objects.end(); ++it)
 		*out_iterator++ = it->second.obj;
 }
 
 template <typename ObjType, typename OutIt>
-inline void Board::get_objects(OutIt out_iterator)
+inline void Board::get_objects(OutIt out_iterator) const
 {
 	for (auto it = m_wrap_objects.begin(); it != m_wrap_objects.end(); ++it)
 	{
@@ -139,7 +141,7 @@ inline void Board::get_objects(OutIt out_iterator)
 }
 
 template<typename OutIt>
-inline void Board::get_objects(int col, int row, OutIt out_iterator)
+inline void Board::get_objects(int col, int row, OutIt out_iterator) const
 {
 	if (col >= m_col_count || row >= m_row_count)
 		return;
@@ -148,12 +150,14 @@ inline void Board::get_objects(int col, int row, OutIt out_iterator)
 	for (auto it = cell.objects_ids.cbegin(); it != cell.objects_ids.cend(); ++it)
 	{
 		const int obj_id = *it;
-		*out_iterator++ = m_wrap_objects[obj_id].obj;
+		auto wrap_obj_it = m_wrap_objects.find(obj_id);
+		if (wrap_obj_it != m_wrap_objects.end())
+			*out_iterator++ = wrap_obj_it->second.obj;
 	}
 }
 
 template <typename ObjType, typename OutIt>
-inline void Board::get_objects(int col, int row, OutIt out_iterator)
+inline void Board::get_objects(int col, int row, OutIt out_iterator) const
 {
 	if (col >= m_col_count || row >= m_row_count)
 		return;
@@ -162,8 +166,12 @@ inline void Board::get_objects(int col, int row, OutIt out_iterator)
 	for (auto it = cell.objects_ids.cbegin(); it != cell.objects_ids.cend(); ++it)
 	{
 		const int obj_id = *it;
-		std::shared_ptr<ObjType> obj = std::dynamic_pointer_cast<ObjType>(m_wrap_objects[obj_id].obj);
-		if (obj)
-			*out_iterator++ = obj;
+		auto wrap_obj_it = m_wrap_objects.find(obj_id);
+		if (wrap_obj_it != m_wrap_objects.end())
+		{
+			std::shared_ptr<ObjType> obj = std::dynamic_pointer_cast<ObjType>(wrap_obj_it->second.obj);
+			if (obj)
+				*out_iterator++ = obj;
+		}
 	}
 }
