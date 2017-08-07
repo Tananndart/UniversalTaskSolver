@@ -86,7 +86,10 @@ Hole::Hole(const Hole & hole)
 	m_number = hole.number();
 	m_is_closed = hole.is_closed();
 
-	m_ball = make_shared<Ball>(*hole.get_ball().get());
+	if (hole.m_ball)
+		m_ball = make_shared<Ball>(*hole.m_ball.get());
+	else
+		m_ball = nullptr;
 }
 
 void Hole::push_ball(BallPtr ball)
@@ -147,7 +150,10 @@ Hole & Hole::operator=(const Hole & hole)
 	m_number = hole.number();
 	m_is_closed = hole.is_closed();
 
-	m_ball = make_shared<Ball>(*hole.get_ball().get());
+	if (hole.m_ball)
+		m_ball = make_shared<Ball>(*hole.m_ball.get());
+	else
+		m_ball = nullptr;
 
 	return *this;
 }
