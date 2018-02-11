@@ -1,30 +1,59 @@
 #pragma once
 
-#include <memory>
+#include "I_GameModel.h"
+#include "Board.h"
 
-class IGameModel;
-typedef std::shared_ptr<IGameModel> IGameModelPtr;
-
-class IGameModel
+class GameModel : public IGameModel
 {
 public:
-
-	static IGameModelPtr create();
+	GameModel();
 
 	// init
-	virtual void create_board(int col_count, int row_count) = 0;
-	virtual void create_wall(int col_1, int row_1, int col_2, int row_2) = 0;
-	virtual void create_ball(int number, int col, int row) = 0;
-	virtual void create_hole(int number, int col, int row) = 0;
-	virtual void bind_ball_with_hole(int ball_number, int hole_number) = 0;
+	void create_board(int col_count, int row_count) override;
+	void create_wall(int col_1, int row_1, int col_2, int row_2) override;
+	void create_ball(int number, int col, int row) override;
+	void create_hole(int number, int col, int row) override;
+	void bind_ball_with_hole(int ball_number, int hole_number) override;
 
-	//check states
-	virtual bool is_win() const = 0;
-	virtual bool is_loose() const = 0;
+	//getters
+	const BoardPtr get_board() const override;
+
+	// check states
+	bool is_win() const override;
+	bool is_loose() const override;
 
 	// commands
-	virtual void incline_board_left() = 0;
-	virtual void incline_board_right() = 0;
-	virtual void incline_board_up() = 0;
-	virtual void incline_board_down() = 0;
+	void incline_board_left() override;
+	void incline_board_right() override;
+	void incline_board_up() override;
+	void incline_board_down() override;
+
+private:
+	BoardPtr m_board;
+	std::map<int, int> m_ball_hole_numbers;	// <ball_number, hole_number>
+	int m_id_counter;
+	int m_wall_count, m_ball_count, m_hole_count;
+
+	// commands
+	void move_ball_right(const int start_col, const int row, const int fin_col, BallPtr ball);
+	void move_ball_left(const int start_col, const int row, const int fin_col, BallPtr ball);
+	void move_ball_up(const int col, const int start_row, const int fin_row, BallPtr ball);
+	void move_ball_down(const int start_col, const int row, const int fin_col, BallPtr ball);
+	void handle_move_ball_in_cell(int col, int row, int next_col, int next_row, BallPtr ball,
+		bool & out_is_accept, bool & out_is_cancel, bool & out_is_push_hole);
+
+	// wall helpers
+	bool check_wall(int col_1, int row_1, int col_2, int row_2,
+		WallPtr* out_wall_ptr = nullptr) const;
+	static int calculate_wall_id(int col_1, int row_1, int col_2, int row_2);
+
+	// service
+	int get_new_id();
+	void get_all_balls(std::vector<BallPtr> & balls) const;
+	bool check_bind_ball_with_hole(const int ball_number, const int hole_number) const;
 };
+
+IGameModelPtr IGameModel::create()
+{
+	return std::make_shared<GameModel>();
+}

@@ -1,25 +1,31 @@
 #pragma once
 
-#include "GameModel.h"
-#include "GameController.h"
+#include "I_GameView.h"
 
-#include <ostream>
-
-class IGameView;
-typedef std::shared_ptr<IGameView> IGameViewPtr;
-
-class IGameView
+class GameView : public IGameView
 {
 public:
 
-	static IGameViewPtr create(std::ostream& out_stream, IGameModelPtr model, IGameControllerPtr controller);
+	GameView(IGameModelPtr model, IGameControllerPtr controller, std::ostream & out_stream, std::istream & in_stream);
 
-	virtual void start_game_loop() = 0;
-	virtual void stop_game_loop() = 0;
+	void start_game_loop() override;
 
-	virtual void draw_board(std::ostream& out_stream) const = 0;
+private:
+	IGameModelPtr m_model;
+	IGameControllerPtr m_controller;
+	std::ostream & m_ostream;
+	std::istream & m_istream;
 
-	virtual void show_win_msg(std::ostream& out_stream) const = 0;
+	void draw_board() const;
+	void show_win_msg() const;
+	void show_loose_msg() const;
 
-	virtual void show_loose_msg(std::ostream& out_stream) const = 0;
+	void draw_objects_in_cell(const int col, const int row) const;
+	bool draw_column_wall(const int col, const int row) const;
+	bool draw_row_wall(const int col, const int row) const;
 };
+
+IGameViewPtr IGameView::create(IGameModelPtr model, IGameControllerPtr controller, std::ostream & out_stream, std::istream & in_stream)
+{
+	return std::make_shared<GameView>(model, controller, out_stream, in_stream);
+}

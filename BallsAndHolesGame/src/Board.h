@@ -34,6 +34,10 @@ public:
 	int get_col_count() const;
 	int get_row_count() const;
 
+	// wall helpers
+	bool check_wall(int col_1, int row_1, int col_2, int row_2, WallPtr* out_wall_ptr) const;
+	int calculate_wall_id(int col_1, int row_1, int col_2, int row_2) const;
+
 	template <typename ObjType>
 	int get_object_count(const int obj_id) const;
 

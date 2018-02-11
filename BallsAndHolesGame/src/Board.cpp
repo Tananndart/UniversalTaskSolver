@@ -1,5 +1,7 @@
 #include "Board.h"
 
+#include <sstream>
+
 using namespace std;
 
 Board::Board(const int col_count, const int row_count) :
@@ -127,6 +129,31 @@ int Board::get_col_count() const
 int Board::get_row_count() const
 {
 	return m_row_count;
+}
+
+bool Board::check_wall(int col_1, int row_1, int col_2, int row_2,
+	WallPtr* out_wall_ptr) const
+{
+	const int wall_id = calculate_wall_id(col_1, row_1, col_2, row_2);
+
+	const WallPtr wall = std::dynamic_pointer_cast<Wall>(get_object(wall_id));
+
+	if (out_wall_ptr)
+		*out_wall_ptr = wall;
+
+	return wall == nullptr ? false : true;
+}
+
+inline int Board::calculate_wall_id(int col_1, int row_1, int col_2, int row_2) const
+{
+	stringstream ss;
+
+	ss << col_1 << row_1 << col_2 << row_2;
+
+	int new_id;
+	ss >> new_id;
+
+	return new_id;
 }
 
 Board::WrapBaseObject::WrapBaseObject(const WrapBaseObject & wrap_obj)

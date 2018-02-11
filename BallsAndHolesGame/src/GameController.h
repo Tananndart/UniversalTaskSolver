@@ -1,12 +1,19 @@
 #pragma once
 
-#include "GameModel.h"
+#include "I_GameController.h"
 
-class IGameController;
-typedef std::shared_ptr<IGameController> IGameControllerPtr;
-
-class IGameController
+class GameController : public IGameController
 {
 public:
-	static IGameControllerPtr create(IGameModelPtr model);
+	GameController(IGameModelPtr model);
+
+	bool handle_input_command(const std::string & command_str) override;
+
+private:
+	IGameModelPtr m_model;
 };
+
+IGameControllerPtr IGameController::create(IGameModelPtr model)
+{
+	return std::make_shared<GameController>(model);
+}

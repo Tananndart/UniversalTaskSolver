@@ -1,5 +1,5 @@
 #include <iostream>
-#include "GameView.h"
+#include "I_GameView.h"
 
 using namespace std;
 
@@ -23,7 +23,7 @@ void main()
 	IGameControllerPtr controller = IGameController::create(model);
 
 	// create view
-	IGameViewPtr view = IGameView::create(cout, model, controller);
+	IGameViewPtr view = IGameView::create(model, controller, cout, cin);
 
 	// start game loop
 	view->start_game_loop();
