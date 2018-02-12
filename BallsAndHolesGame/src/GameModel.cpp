@@ -10,11 +10,12 @@ GameModel::GameModel()
 	m_board = nullptr;
 	m_id_counter = 0;
 	m_wall_count = m_ball_count = m_hole_count = 0;
+	m_board = nullptr;
 }
 
 void GameModel::create_board(int col_count, int row_count)
 {
-	m_board = make_shared<Board>(col_count, row_count);
+	m_board = BoardUnicPtr(new Board(col_count, row_count));
 }
 
 void GameModel::create_wall(int col_1, int row_1, int col_2, int row_2)
@@ -49,7 +50,7 @@ void GameModel::bind_ball_with_hole(int ball_number, int hole_number)
 	m_ball_hole_numbers[ball_number] = hole_number;
 }
 
-const BoardPtr GameModel::get_board() const
+const BoardUnicPtr& GameModel::get_board() const
 {
 	return m_board;
 }

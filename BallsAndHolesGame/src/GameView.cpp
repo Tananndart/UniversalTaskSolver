@@ -43,7 +43,7 @@ void GameView::start_game_loop()
 
 void GameView::draw_board() const
 {
-	const BoardPtr board = m_model->get_board();
+	const BoardUnicPtr& board = m_model->get_board();
 
 	const int col_count = board->get_col_count();
 	const int row_count = board->get_row_count();
@@ -92,7 +92,7 @@ void GameView::show_loose_msg() const
 
 void GameView::draw_objects_in_cell(const int col, const int row) const
 {
-	const BoardPtr board = m_model->get_board();
+	const BoardUnicPtr& board = m_model->get_board();
 	const int obj_count = board->get_object_count(col, row);
 
 	if (obj_count == 0)
@@ -135,7 +135,7 @@ void GameView::draw_objects_in_cell(const int col, const int row) const
 
 bool GameView::draw_column_wall(const int col, const int row) const
 {
-	const BoardPtr board = m_model->get_board();
+	const BoardUnicPtr& board = m_model->get_board();
 	const int col_count = board->get_col_count();
 
 	if (col < col_count - 1)
@@ -153,7 +153,7 @@ bool GameView::draw_column_wall(const int col, const int row) const
 
 bool GameView::draw_row_wall(const int col, const int row) const
 {
-	const BoardPtr board = m_model->get_board();
+	const BoardUnicPtr& board = m_model->get_board();
 	const int row_count = board->get_row_count();
 
 	if (row < row_count - 1)

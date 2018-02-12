@@ -16,7 +16,7 @@ public:
 	void bind_ball_with_hole(int ball_number, int hole_number) override;
 
 	//getters
-	const BoardPtr get_board() const override;
+	const BoardUnicPtr& get_board() const override;
 
 	// check states
 	bool is_win() const override;
@@ -29,7 +29,7 @@ public:
 	void incline_board_down() override;
 
 private:
-	BoardPtr m_board;
+	BoardUnicPtr m_board;
 	std::map<int, int> m_ball_hole_numbers;	// <ball_number, hole_number>
 	int m_id_counter;
 	int m_wall_count, m_ball_count, m_hole_count;

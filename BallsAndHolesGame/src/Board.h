@@ -9,6 +9,7 @@
 
 class Board;
 typedef std::shared_ptr<Board> BoardPtr;
+typedef std::unique_ptr<Board> BoardUnicPtr;
 
 class Board
 {
